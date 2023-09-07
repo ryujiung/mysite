@@ -35,7 +35,7 @@
 				<ul>
 					<li>
 					<%	
-						for(int i=0;i < list.size();i++) {
+						for(int i = 0;i < list.size();i++) {
 					%>
 						<table>
 							<tr>
@@ -43,17 +43,14 @@
 								<td><%=list.get(i).getName() %></td>
 								<td><%=list.get(i).getDate() %></td>
 								<td><a href="<%=request.getContextPath()%>/guestbook?a=deleteform&no=<%=list.get(i).getNo() %>">삭제</a></td>
-								
-							
 							</tr>
 							<tr>
-								<td colspan=4 ><%=list.get(i).getContents() %></td>
+								<td colspan=4><%=list.get(i).getContents() %></td>
 							</tr>
-							
 						</table>
 						<br>
-						<% 
-						}
+						<%
+							}
 						%>
 					</li>
 				</ul>
