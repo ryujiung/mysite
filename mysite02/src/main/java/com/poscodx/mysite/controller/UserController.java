@@ -7,9 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.poscodx.mysite.web.mvc.user.JoinAction;
-import com.poscodx.mysite.web.mvc.user.JoinFormAction;
-import com.poscodx.mysite.web.mvc.user.JoinSuccessAction;
+import com.poscodx.mysite.web.mvc.user.UserActionFactory;
 import com.poscodx.web.mvc.Action;
 
 public class UserController extends HttpServlet {
@@ -19,20 +17,8 @@ public class UserController extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		
 		String actionName = request.getParameter("a");
-		Action action = null;
-		
-		if("joinform".equals(actionName)) {
-			action = new JoinFormAction();
-		}else if("join".equals(action)){
-			action = new JoinAction();
-		}else if("joinsuccess".equals(action)) {
-			action = new JoinSuccessAction();
-		}
-		
-		if(action == null) {
-			response.sendRedirect(request.getContextPath());
-			return;
-		}
+		Action action = new UserActionFactory().getAction(actionName); 
+		action.execute(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
