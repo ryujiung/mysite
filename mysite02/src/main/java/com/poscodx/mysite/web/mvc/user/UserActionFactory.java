@@ -6,7 +6,6 @@ import com.poscodx.web.mvc.ActionFactory;
 
 public class UserActionFactory implements ActionFactory {
 
-	@Override
 	public Action getAction(String actionName) {
 		Action action = null;
 		
@@ -24,7 +23,9 @@ public class UserActionFactory implements ActionFactory {
 			action = new LogoutAction();
 		} else if("updateform".equals(actionName)) {
 			action = new UpdateformAction();
-		}else {
+		} else if("update".equals(actionName)) {
+			action = new UpdateAction();
+		} else {
 			action = new MainAction();
 		}
 		
