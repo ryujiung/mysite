@@ -1,16 +1,17 @@
 package com.poscodx.mysite.vo;
 
+import java.sql.Date;
+
 public class GuestBookVo {
-	private int no;
+	private Long no;
 	private String name;
 	private String password;
 	private String contents;
-	private String regDate;
-	
-	public int getNo() {
+	private Date date;
+	public Long getNo() {
 		return no;
 	}
-	public void setNo(int no) {
+	public void setNo(Long no) {
 		this.no = no;
 	}
 	public String getName() {
@@ -25,23 +26,25 @@ public class GuestBookVo {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getContents() {
 		return contents;
 	}
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
-	public String getRegDate() {
-		return regDate;
+	public Date getDate() {
+		return date;
 	}
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
+	public void setDate(Date date) {
+		this.date = date;
 	}
-	
 	@Override
 	public String toString() {
 		return "GuestBookVo [no=" + no + ", name=" + name + ", password=" + password + ", contents=" + contents
-				+ ", regDate=" + regDate + "]";
+				+ ", date=" + date + "]";
 	}
+
+	
 	
 }

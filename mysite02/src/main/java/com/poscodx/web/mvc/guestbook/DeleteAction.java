@@ -15,7 +15,7 @@ public class DeleteAction implements Action {
 		String no = request.getParameter("no");
 		String password = request.getParameter("password");
 		
-		if(password.equals(new GuestBookDao().findPasswordByNo(Integer.parseInt(no)))) {
+		if(password.equals(new GuestBookDao().findPasswordByNo(Long.parseLong(no)))) {
 			new GuestBookDao().deleteByNo(no);	
 		}
 		
