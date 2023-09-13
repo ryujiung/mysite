@@ -24,7 +24,7 @@ public class GuestBookDao {
 			conn = getConnection();
 
 			// 3. SQL 준비
-			String sql = "select no, name, password, contents, reg_date from guestbook order by no desc";
+			String sql = "select no, name, password, contents, date_format(reg_date, '%Y/%m/%d %H:%i:%s') from guestbook order by reg_date desc";
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. binding
@@ -38,14 +38,14 @@ public class GuestBookDao {
 				String name = rs.getString(2);
 				String password = rs.getString(3);
 				String contents = rs.getString(4);
-				Date date = rs.getDate(5);
+				String regDate = rs.getString(5);
 
 				GuestBookVo vo = new GuestBookVo();
 				vo.setNo(no);
 				vo.setName(name);
 				vo.setPassword(password);
 				vo.setContents(contents);
-				vo.setDate(date);
+				vo.setRegDate(regDate);
 
 				result.add(vo);
 			}
@@ -79,13 +79,12 @@ public class GuestBookDao {
 		try {
 			conn = getConnection();
 
-			String sql = "insert into guestbook values(null, ?, ?, ?, ?)";
+			String sql = "insert into guestbook values(null, ?, ?, ?,now())";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getPassword());
 			pstmt.setString(3, vo.getContents());
-			pstmt.setDate(4, vo.getDate());
 
 			pstmt.executeQuery();
 		} catch (SQLException e) {

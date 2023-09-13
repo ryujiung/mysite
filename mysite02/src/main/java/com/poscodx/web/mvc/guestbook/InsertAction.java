@@ -15,12 +15,12 @@ public class InsertAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
-		String content = request.getParameter("content");
+		String contents = request.getParameter("contents");
 		
 		GuestBookVo vo = new GuestBookVo();
 		vo.setName(name);
 		vo.setPassword(password);
-		vo.setContents(content);
+		vo.setContents(contents);
 		
 		new GuestBookDao().insert(vo);
 

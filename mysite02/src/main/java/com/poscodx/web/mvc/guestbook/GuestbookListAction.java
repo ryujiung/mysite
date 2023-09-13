@@ -18,7 +18,7 @@ public class GuestbookListAction implements Action {
 		List<GuestBookVo> list = new GuestBookDao().findAll();
 		
 		request.setAttribute("list", list);
-		WebUtil.forward("guestbook/index", request, response);
+		WebUtil.forward("guestbook/list", request, response);
 	}
 
 }
