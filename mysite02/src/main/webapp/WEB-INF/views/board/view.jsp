@@ -33,7 +33,7 @@
 					</tr>
 				</table>
 				<div class="bottom">
-					<a href="${pageContext.request.contextPath }/board">글목록</a> 
+					<a href="${pageContext.request.contextPath }/board?begin=1&i=1">글목록</a> 
 					
 					<c:choose>
 						<c:when test="${empty authUser }">
