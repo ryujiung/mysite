@@ -1,4 +1,4 @@
-package com.poscodx.mysite.dao;
+package com.poscodx.mysite.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,9 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.poscodx.mysite.vo.GuestBookVo;
 
-public class GuestBookDao {
+@Repository
+public class GuestbookRepository {
 
 	public List<GuestBookVo> findAll() {
 		List<GuestBookVo> result = new ArrayList<>();
@@ -71,63 +74,78 @@ public class GuestBookDao {
 		return result;
 	}
 
-	public void insert(GuestBookVo vo) {
+	public Boolean insert(GuestBookVo vo) {
+		boolean result = false;
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-
+		
 		try {
 			conn = getConnection();
-
-			String sql = "insert into guestbook values(null, ?, ?, ?,now())";
+			
+			String sql = "insert into guestbook values(null, ?, ?, ?, now())";
 			pstmt = conn.prepareStatement(sql);
-
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getPassword());
 			pstmt.setString(3, vo.getContents());
-
-			pstmt.executeQuery();
+			
+			int count = pstmt.executeUpdate();
+			
+			//5. 결과 처리
+			result = count == 1;
+			
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
+			System.out.println("Error:" + e);
 		} finally {
 			try {
-				if (pstmt != null) {
+				if(pstmt != null) {
 					pstmt.close();
 				}
-				if (conn != null) {
+				
+				if(conn != null) {
 					conn.close();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		
+		return result;
 	}
-
-	public void deleteByNo(String no) {
+	public Boolean deleteByNoAndPassword(Long no, String password) {
+		boolean result = false;
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-
+		
 		try {
 			conn = getConnection();
-
-			String sql = "delete from guestbook where no=?";
+			
+			String sql = "delete from guestbook where no = ? and password = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, no);
-
-			pstmt.executeQuery();
+			pstmt.setLong(1, no);
+			pstmt.setString(2, password);
+			
+			int count = pstmt.executeUpdate();
+			
+			result = count == 1;
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
+			System.out.println("Error:" + e);
 		} finally {
 			try {
-				if (pstmt != null) {
+				if(pstmt != null) {
 					pstmt.close();
 				}
-				if (conn != null) {
+				
+				if(conn != null) {
 					conn.close();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		
+		return result;		
 	}
 	public String findPasswordByNo(Long no) {
 		String result = null;

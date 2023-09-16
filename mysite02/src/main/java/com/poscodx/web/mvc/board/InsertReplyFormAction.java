@@ -25,6 +25,7 @@ public class InsertReplyFormAction implements Action {
 		request.setAttribute("g_no", g_no);
 		request.setAttribute("depth", depth);
 		request.setAttribute("o_no", o_no);
+
 		
 		WebUtil.forward("board/writereply",request, response);
 
