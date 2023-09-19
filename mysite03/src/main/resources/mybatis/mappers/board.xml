@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	
+	<select id="findAll" resultType="boardvo">
+		<![CDATA[
+		  select a.no, title, contents, hit, date_format(reg_date, '%Y/%m/%d %H:%i:%s') as regDate,g_no,o_no,depth,user_no,b.name, (select ceil(count(*)/5) from board) as total 
+		  from board a ,user b 
+		  where a.user_no=b.no  
+		  order by g_no desc, o_no asc 
+		  limit  #{page},5
+		]]>
+	</select>
+	
+	<select id="findByNo" parameterType="long" resultType="boardvo">
+		<![CDATA[
+		select	*
+		   from board
+		  where no = #{no }		
+		]]>		
+	</select>
+	
+	<insert id="insert" parameterType="boardvo">
+		<![CDATA[
+		insert into board select null, ?, ?, 0, now(), MAX(g_no) + 1, 1, 1, ? from board		
+		]]>		
+	</insert>
+	
+</mapper>

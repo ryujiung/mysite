@@ -69,13 +69,13 @@
 							</c:when>
 							<c:otherwise>
 								<li><a
-									href="${pageContext.request.contextPath }/board?begin=${begin - 5}&i=${begin - 5}">◀</a></li>
+									href="${pageContext.request.contextPath }/board/${begin - 5}/${begin - 5}">◀</a></li>
 							</c:otherwise>
 						</c:choose>
 
 						<c:set var="chk" value="true" />
-						<c:forEach var="i" begin="${param.begin }"
-							end="${param.begin + 4 }" step="1">
+						<c:forEach var="i" begin="${begin }"
+							end="${begin + 4 }" step="1">
 							<c:if test="${chk}">
 								<c:choose>
 									<c:when test="${empty list }">
@@ -86,13 +86,13 @@
 									</c:when>
 									<c:otherwise>
 										<c:choose>
-											<c:when test="${list.get(0).page == i}">
+											<c:when test="${page == i}">
 												<li class="selected"><a
-													href="${pageContext.request.contextPath }/board?begin=${begin}&i=${i}">${i }</a></li>
+													href="${pageContext.request.contextPath }/board/${begin}/${i}">${i }</a></li>
 											</c:when>
 											<c:otherwise>
 												<li><a
-													href="${pageContext.request.contextPath }/board?begin=${begin}&i=${i}">${i }</a></li>
+													href="${pageContext.request.contextPath }/board/${begin}/${i}">${i }</a></li>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>
@@ -107,7 +107,7 @@
 							</c:when>
 							<c:otherwise>
 								<li><a
-									href="${pageContext.request.contextPath }/board?begin=${begin + 5}&i=${begin + 5}">▶</a></li>
+									href="${pageContext.request.contextPath }/board/${begin + 5}/${begin + 5}">▶</a></li>
 							</c:otherwise>
 						</c:choose>
 					</ul>
