@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
 import com.poscodx.mysite.vo.GuestBookVo;
 
@@ -16,9 +17,9 @@ public class GuestbookRepository {
 	private SqlSession sqlSession;
 
 	public List<GuestBookVo> findAll() {
-
+		
 		return sqlSession.selectList("guestbook.findAll");
-
+		
 	}
 
 	public Boolean insert(GuestBookVo vo) {
