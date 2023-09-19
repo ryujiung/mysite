@@ -19,55 +19,10 @@ import com.poscodx.mysite.vo.UserVo;
 
 @Repository
 public class UserRepository {
+
 	@Autowired
 	private SqlSession sqlSession;
 
-	public List<UserVo> findAll() {
-		List<UserVo> result = new ArrayList<UserVo>();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = getConnection();
-
-			String sql = "select no, name, contents, reg_date " + "from guestbook " + "order by reg_date desc";
-			pstmt = conn.prepareStatement(sql);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				int no = rs.getInt(1);
-				String name = rs.getString(2);
-				String contents = rs.getString(3);
-				String regDate = rs.getString(4);
-
-				UserVo vo = new UserVo();
-				vo.setName(name);
-
-				result.add(vo);
-			}
-
-		} catch (SQLException e) {
-			System.out.println("Guestbook Select error: " + e);
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return result;
-	}
 
 	public UserVo findByEmailAndPassword(String email, String password) {
 		Map<String,Object> map = new HashMap<>();
@@ -143,6 +98,53 @@ public class UserRepository {
 			
 			return conn;
 		}
+		public List<UserVo> findAll() {
+			List<UserVo> result = new ArrayList<UserVo>();
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+
+			try {
+				conn = getConnection();
+
+				String sql = "select no, name, contents, reg_date " + "from guestbook " + "order by reg_date desc";
+				pstmt = conn.prepareStatement(sql);
+
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					int no = rs.getInt(1);
+					String name = rs.getString(2);
+					String contents = rs.getString(3);
+					String regDate = rs.getString(4);
+
+					UserVo vo = new UserVo();
+					vo.setName(name);
+
+					result.add(vo);
+				}
+
+			} catch (SQLException e) {
+				System.out.println("Guestbook Select error: " + e);
+			} finally {
+				try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (pstmt != null) {
+						pstmt.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return result;
+		}
 
 
+	
 }
