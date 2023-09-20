@@ -19,10 +19,10 @@
 			<div id="board">
 				<form class="board-form" method="post"
 					action="${pageContext.request.contextPath }/board">
-					<input type="hidden" name="a" value="insertreply">
-					<input type="hidden" name="g_no" value='${param.g_no}' >
+					<input type="hidden" name="a" value="addreply">
+					<input type="hidden" name="groupNo" value='${param.groupNo}' >
 					<input type="hidden" name="depth" value='${param.depth}' >
-					<input type="hidden" name="o_no" value='${param.o_no}' >
+					<input type="hidden" name="orderNo" value='${param.orderNo}' >
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>
@@ -38,7 +38,7 @@
 					</table>
 					<div class="bottom">
 						<a
-							href="${pageContext.request.contextPath }/board?a=detailform&no=${param.no}&title=${param.title}&contents=${param.contents}">취소</a>
+							href="${pageContext.request.contextPath }/board?a=detailboardorreply&no=${param.no}&title=${param.title}&contents=${param.contents}&userNo=${param.userNo}&groupNo=${param.groupNo}&depth=${param.depth}&orderNo=${param.orderNo}">취소</a>
 						<input type="submit" value="등록">
 					</div>
 				</form>

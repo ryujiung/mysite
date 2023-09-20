@@ -1,12 +1,8 @@
 package com.poscodx.mysite.repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,174 +12,60 @@ import com.poscodx.mysite.vo.BoardVo;
 
 @Repository
 public class BoardRepository {
-	
-	@Autowired
-	private SqlSession sqlSession;
 
-	public List<BoardVo> findAll(int page) {
-		
-		return sqlSession.selectList("board.findAll",page);
-		
-	}
-	 public BoardVo findByNo(Long no) {
-	        return sqlSession.selectOne("board.findByNo", no);
-	    }
-	 public int insert(BoardVo boardVo) {
-	        return sqlSession.insert("board.insert", boardVo);
-	    }
-	public void deleteByNo(Long no) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+    @Autowired
+    private SqlSession sqlSession;
 
-		try {
-			conn = getConnection();
+    public int insert(BoardVo boardVo) {
+        return sqlSession.insert("board.insert", boardVo);
+    }
 
-			String sql = "delete from board where no=?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setLong(1, no);
+    public List<BoardVo> findAllByPageAndKeword(String keyword, Integer page, Integer size) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("keyword", keyword);
+        map.put("startIndex", (page - 1) * size);
+        map.put("size", size);
 
-			pstmt.executeQuery();
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	public void updateTitleAndContentsByNo(String title, String contents, String no) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		int no1 = Integer.parseInt(no);
+        return sqlSession.selectList("board.findAllByPageAndKeword", map);
+    }
 
-		try {
-			conn = getConnection();
-			String sql = "update board set title=?, contents=? where no = ?";
+    public int update(BoardVo boardVo) {
+        return sqlSession.update("board.update", boardVo);
+    }
 
-			pstmt = conn.prepareStatement(sql);
+    public int delete(Long no, Long userNo) {
+        Map<String, Long> map = new HashMap<String, Long>();
+        map.put("no", no);
+        map.put("userNo", userNo);
 
-			pstmt.setString(1, title);
-			pstmt.setString(2, contents);
-			pstmt.setInt(3, no1);
+        return sqlSession.delete("board.delete", map);
+    }
 
-			pstmt.executeQuery();
+    public BoardVo findByNo(Long no) {
+        return sqlSession.selectOne("board.findByNo", no);
+    }
 
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
-	public void UpdateHit(Long no) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs =  null;
-		try {
-			conn = getConnection();
-			
-			String sql = "update board"
-					+ " set hit = hit + 1"
-					+ " where no = ?";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setLong(1, no);
-			pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	private Connection getConnection() throws SQLException {
-		Connection conn = null;
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			String url = "jdbc:mariadb://192.168.64.2:3307/webdb?charset=utf8";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패:" + e);
-		}
+    public BoardVo findByNoAndUserNo(Long no, Long userNo) {
+        Map<String, Long> map = new HashMap<String, Long>();
+        map.put("no", no);
+        map.put("userNo", userNo);
 
-		return conn;
-	}
-	public void insertreply(BoardVo vo) {
-		Connection conn = null;
-		PreparedStatement update_pstmt = null;
-		PreparedStatement insert_pstmt = null;
+        return sqlSession.selectOne("board.findByNoAndUserNo", map);
+    }
 
-		try {
-			conn = getConnection();
-			
-			String update_sql = "update board set o_no = o_no + 1 where g_no = ? and o_no >= ?";
-			
-			update_pstmt = conn.prepareStatement(update_sql);
-			update_pstmt.setInt(1, vo.getG_no());
-			update_pstmt.setInt(2, vo.getO_no()+1);
-			
-			update_pstmt.executeQuery();
+    public int updateHit(Long no) {
+        return sqlSession.update("board.updateHit", no);
+    }
 
-			String insert_sql = "insert into board values(null, ?, ?, 0, now(),?, ?, ?, ?)";
-			
-			insert_pstmt = conn.prepareStatement(insert_sql);
-			insert_pstmt.setString(1, vo.getTitle());
-			insert_pstmt.setString(2, vo.getContents());
-			insert_pstmt.setInt(3, vo.getG_no());
-			insert_pstmt.setInt(4, vo.getO_no()+1);			
-			insert_pstmt.setInt(5, vo.getDepth()+1);
-			insert_pstmt.setLong(6, vo.getUser_no());
+    public int updateOrderNo(Integer groupNo, Integer orderNo) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        map.put("groupNo", groupNo);
+        map.put("orderNo", orderNo);
 
-			insert_pstmt.executeQuery();
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if (update_pstmt != null) {
-					update_pstmt.close();
-				}
-				if (insert_pstmt != null) {
-					insert_pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
+        return sqlSession.update("board.updateOrederNo", map);
+    }
 
+    public int getTotalCount(String keyword) {
+        return sqlSession.selectOne("board.totalCount", keyword);
+    }
 }
-
