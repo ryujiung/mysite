@@ -11,19 +11,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-	
 	private static final Log logger = LogFactory.getLog(GlobalExceptionHandler.class);
 	
 	@ExceptionHandler(Exception.class)
-	public String handlerException(Model model,Exception e) {
-		
+	public String handlerException(Model model, Exception e) {
 		//1. 로깅(Logging)
-		StringWriter errors = new StringWriter();		
+		StringWriter errors = new StringWriter();
 		e.printStackTrace(new PrintWriter(errors));
 		logger.error(errors.toString());
-		                                                                              
-		//2.사과 페이지 
-		model.addAttribute("errors",errors.toString());
+		
+		//2. 사과 페이지
+		model.addAttribute("errors", errors.toString());
 		return "error/exception";
 	}
 }
