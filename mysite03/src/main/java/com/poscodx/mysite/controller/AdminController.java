@@ -29,26 +29,26 @@ public class AdminController {
 		return "admin/main";
 	}
 
-//	@RequestMapping("/main/update")
-//	public String update(@RequestParam("f") MultipartFile file, SiteVo vo) {
-//		String url = fileUploadService.restore(file);
-//		vo.setProfile(url);
-//		System.out.println(vo);
-//		siteService.updateSite(vo);
-//		return "redirect:/admin";  
-//	}
 	@RequestMapping("/main/update")
 	public String update(@RequestParam("f") MultipartFile file, SiteVo vo) {
+		String url = fileUploadService.restore(file);
+		vo.setProfile(url);
 		System.out.println(vo);
-		String profile = fileUploadService.restore(file);
-		System.out.println(profile);
-		System.out.println(vo);
-		if (profile != null) {
-			vo.setProfile(profile);
-		}
 		siteService.updateSite(vo);
-		return "redirect:/admin";
+		return "redirect:/admin";  
 	}
+//	@RequestMapping("/main/update")
+//	public String update(@RequestParam("f") MultipartFile file, SiteVo vo) {
+//		System.out.println(vo);
+//		String profile = fileUploadService.restore(file);
+//		System.out.println(profile);
+//		System.out.println(vo);
+//		if (profile != null) {
+//			vo.setProfile(profile);
+//		}
+//		siteService.updateSite(vo);
+//		return "redirect:/admin";
+//	}
 
 	
 	@RequestMapping("/guestbook")
