@@ -82,7 +82,7 @@
 	</bean>
 
 	<!-- url-resource mapping -->
-	<mvc:resources mapping="/images/**"
+	<mvc:resources mapping="/assets/upload-images/**"
 		location="file:/Users/ryujiung/mysite-uploads/" />
 
 	<context:annotation-config />
