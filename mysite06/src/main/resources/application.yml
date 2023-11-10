@@ -29,7 +29,7 @@ spring:
    # message resources(internationalization, i18n)
    messages:
       always-use-message-format: true
-      basename: messages/messages     
+      basename: web/messages/messages     
       encoding: utf-8
    
    # aop

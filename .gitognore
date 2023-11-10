@@ -1,6 +1,3 @@
-##mac
-**/.DS_Store
-
 ## maven
 **/target/
 **/build/
@@ -10,4 +7,6 @@
 **/.settings
 **/.classpath
 **/.project
-S
+
+## node
+**/node_modules
